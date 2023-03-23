@@ -1,10 +1,7 @@
 package com.example.Book_My_Show_Application.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "Theaters")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Theater {
@@ -28,7 +26,6 @@ public class Theater {
     //This is the parent wrt to theaterSeats
     @OneToMany(mappedBy = "theaterEntity",cascade = CascadeType.ALL)
     private List<TheaterSeat> theaterSeatEntityList = new ArrayList<>();
-
 
     @OneToMany(mappedBy = "theaterEntity",cascade = CascadeType.ALL)
     private List<Shows> showEntityList = new ArrayList<>();

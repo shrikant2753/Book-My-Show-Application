@@ -5,6 +5,7 @@ import com.example.Book_My_Show_Application.Enums.Language;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "Movies")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Movie {
