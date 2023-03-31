@@ -16,6 +16,6 @@ public class MovieService {
     public String addMovie(MovieEntryDto movieEntryDto)throws Exception{
         Movie movie = MovieConvertor.convertDtoToEntity(movieEntryDto);
         movieRepository.save(movie);
-        return "Movie save successfully";
+        return "Movie Added successfully";
     }
 }

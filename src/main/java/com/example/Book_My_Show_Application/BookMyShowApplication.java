@@ -9,5 +9,12 @@ public class BookMyShowApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BookMyShowApplication.class, args);
 	}
-
 }
+/*
+
+	1. getShowsTiming(movieId, theaterId)
+	2. getMovie with max no of shows across all theaters
+	3. getTheater(movieId)
+	4. getUniqueLocationsOfTheater()
+
+ */

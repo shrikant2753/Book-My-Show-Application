@@ -23,10 +23,23 @@ public class TheaterService {
 
     public String addTheater(TheaterEntryDto theaterEntryDto) throws Exception{
 
+        if(theaterEntryDto.getName()==null || theaterEntryDto.getLocation()==null){
+            throw new Exception("Name and location should be valid");
+        }
+
+//        if(theaterRepository.findByName(theaterEntryDto.getName())!=null){
+//            throw new Exception("Theater name should be unique");
+//        }
+
+        if(theaterEntryDto.getClassicSeatCount() < 0 || theaterEntryDto.getPremiumSeatCount() < 0){
+            throw new Exception("Theater seats should not be negative");
+        }
+
         Theater theater = TheaterConvertor.convertTheaterDtoToEntity(theaterEntryDto);
         List<TheaterSeat> theaterSeatList = createTheater(theaterEntryDto, theater);
+        theater.setTheaterSeatEntityList(theaterSeatList);
         theaterRepository.save(theater);
-        return " ";
+        return " Theater Added Successfully";
     }
 
     private List<TheaterSeat> createTheater(TheaterEntryDto theaterEntryDto, Theater theater){
@@ -54,7 +67,6 @@ public class TheaterService {
             theaterSeatList.add(theaterSeat);
         }
 
-        theaterSeatRepository.saveAll(theaterSeatList);
         return theaterSeatList;
     }
 }

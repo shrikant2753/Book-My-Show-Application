@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.SQLException;
 
 @RestController
-@RequestMapping("/Movie")
+@RequestMapping("/movie")
 public class MovieController {
     @Autowired
     MovieService movieService;
