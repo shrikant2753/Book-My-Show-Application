@@ -2,6 +2,7 @@ package com.example.Book_My_Show_Application.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "tickets")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ticket {
@@ -24,10 +26,10 @@ public class Ticket {
     private String ticketId = UUID.randomUUID().toString();
     private int totalPrice;
 
-    private String movie;
-    private LocalDate showTiming;
-    private LocalTime showDate;
-    private String theater;
+    private String movieName;
+    private LocalDate showDate;
+    private LocalTime showTime;
+    private String theaterName;
     private String bookedSeat;
 
     @JoinColumn
