@@ -5,7 +5,6 @@ import com.example.Book_My_Show_Application.Entity.Shows;
 import com.example.Book_My_Show_Application.Entity.ShowsSeat;
 import com.example.Book_My_Show_Application.Entity.Ticket;
 import com.example.Book_My_Show_Application.Entity.User;
-import com.example.Book_My_Show_Application.EntryDTOs.ShowEntryDto;
 import com.example.Book_My_Show_Application.EntryDTOs.TicketEntryDto;
 import com.example.Book_My_Show_Application.Repository.ShowRepository;
 import com.example.Book_My_Show_Application.Repository.TicketRepository;
@@ -28,6 +27,9 @@ public class TicketService {
     @Autowired
     UserRepository userRepository;
 
+    //@Autowired
+    //JavaMailSender
+
     public String bookedTicket(TicketEntryDto ticketEntryDto) throws Exception{
         //convert dto to entity
         Ticket ticket = TicketConvertor.convertDtoToEntity(ticketEntryDto);
@@ -45,13 +47,7 @@ public class TicketService {
         //calculate the total amount
         Shows showEntity = showRepository.findById(ticketEntryDto.getShowId()).get();
         List<String>requestedSeats = ticketEntryDto.getRequestedSeat();
-        List<ShowsSeat> listOfShowSeat = showEntity.getListOfShowSeats();
-        int totalAmount = 0;
-        for(ShowsSeat showsSeat : listOfShowSeat){
-            totalAmount += showsSeat.getPrice();
-            showsSeat.setBooked(true);
-            showsSeat.setBookedAt(new Date());
-        }
+        int totalAmount = calculateTotalAmount(showEntity, requestedSeats);
 
         ticket.setTotalPrice(totalAmount);
 
@@ -71,6 +67,8 @@ public class TicketService {
         ticket.setShows(showEntity);
 
         //save the parents
+        ticket = ticketRepository.save(ticket);
+
         List<Ticket> ticketList = showEntity.getListOfBookedTickets();
         ticketList.add(ticket);
         showEntity.setListOfBookedTickets(ticketList);
@@ -81,27 +79,24 @@ public class TicketService {
         user.setBookedTickets(ticketList1);
         userRepository.save(user);
 
-
-
         return "Ticket Booked Successfully";
     }
 
-    private boolean checkValidityOfRequestedSeat(TicketEntryDto ticketEntryDto){
+    private boolean checkValidityOfRequestedSeat(TicketEntryDto ticketEntryDto)throws Exception{
         int showId = ticketEntryDto.getShowId();
         List<String>requestedSeats = ticketEntryDto.getRequestedSeat();
         Shows showEntity = showRepository.findById(showId).get();
         List<ShowsSeat> listOfShowSeat = showEntity.getListOfShowSeats();
 
         for(ShowsSeat showsSeat : listOfShowSeat){
-            if(requestedSeats.contains(showsSeat)){
+            String seatNo = showsSeat.getSeatNumber();
+            if(requestedSeats.contains(seatNo)){
                 if(showsSeat.isBooked())
                     return false;
             }
-            else{
-                return false;
-            }
         }
-        return true;
+
+       return true;
     }
 
     private String getAllottedSeatsFromShowSeats(List<String> requestedSeat){
@@ -111,5 +106,18 @@ public class TicketService {
             result += seat + ", ";
         }
         return result;
+    }
+
+    private int calculateTotalAmount(Shows shows, List<String> requestedSeat){
+        int totalAmount=0;
+        List<ShowsSeat> listOfShowSeat = shows.getListOfShowSeats();
+        for(ShowsSeat showsSeat : listOfShowSeat){
+            if(requestedSeat.contains(showsSeat.getSeatNumber())) {
+                totalAmount += showsSeat.getPrice();
+                showsSeat.setBooked(true);
+                showsSeat.setBookedAt(new Date());
+            }
+        }
+        return totalAmount;
     }
 }

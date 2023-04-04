@@ -5,8 +5,11 @@ import com.example.Book_My_Show_Application.Entity.*;
 import com.example.Book_My_Show_Application.EntryDTOs.ShowEntryDto;
 import com.example.Book_My_Show_Application.Enums.SeatType;
 import com.example.Book_My_Show_Application.Repository.MovieRepository;
+import com.example.Book_My_Show_Application.Repository.ShowRepository;
 import com.example.Book_My_Show_Application.Repository.TheaterRepository;
+import com.example.Book_My_Show_Application.ResponseDTOs.GetShowTiming;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,6 +18,8 @@ import java.util.List;
 @Service
 public class ShowService {
 
+    @Autowired
+    ShowRepository showRepository;
 
     @Autowired
     MovieRepository movieRepository;
@@ -37,6 +42,8 @@ public class ShowService {
         shows.setListOfShowSeats(showsSeatList);
 
         //now we need to update the parent entities
+        shows = showRepository.save(shows);
+
         List<Shows> showsList = movie.getShowsList();
         showsList.add(shows);
         movie.setShowsList(showsList);
@@ -71,5 +78,24 @@ public class ShowService {
             showsSeatList.add(showsSeat);
         }
         return showsSeatList;
+    }
+
+    public List<Shows> getShowsTiming(GetShowTiming getShowTiming) throws Exception{
+        int movieId = getShowTiming.getMovieId();
+        int theaterId = getShowTiming.getTheaterId();
+        List<Shows> showsList = showRepository.findAll();
+        for(Shows shows : showsList){
+            System.out.println(shows.toString());
+        }
+        List<Shows> ansShowsList = new ArrayList<>();
+        for(Shows shows : showsList){
+            if(shows.getMovie().getId() == movieId && shows.getTheaterEntity().getId()==theaterId){
+                ansShowsList.add(shows);
+            }
+        }
+        for(Shows shows : ansShowsList){
+            System.out.println(shows.toString());
+        }
+        return ansShowsList;
     }
 }

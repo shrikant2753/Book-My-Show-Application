@@ -16,7 +16,11 @@ public class UserService {
     UserRepository userRepository;
     public String addUser(UserEntryDto userEntryDto) throws SQLException, Exception{
 
-        if(userEntryDto.getEmail()!=null){
+//        if(userEntryDto.getEmail()!=null){
+//            throw new Exception("Email already exist");
+//        }
+
+        if(userRepository.findByEmail(userEntryDto.getEmail())!=null){
             throw new Exception("Email already exist");
         }
         User user = UserConverter.convertDtoToEntity(userEntryDto);

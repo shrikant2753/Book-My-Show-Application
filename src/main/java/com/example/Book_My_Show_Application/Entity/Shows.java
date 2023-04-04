@@ -1,6 +1,7 @@
 package com.example.Book_My_Show_Application.Entity;
 
 import com.example.Book_My_Show_Application.Enums.ShowType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
