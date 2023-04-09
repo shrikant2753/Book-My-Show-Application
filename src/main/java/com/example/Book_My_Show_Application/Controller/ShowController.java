@@ -2,6 +2,7 @@ package com.example.Book_My_Show_Application.Controller;
 
 import com.example.Book_My_Show_Application.Entity.Shows;
 import com.example.Book_My_Show_Application.EntryDTOs.ShowEntryDto;
+import com.example.Book_My_Show_Application.EntryDTOs.ShowTiming;
 import com.example.Book_My_Show_Application.ResponseDTOs.GetShowTiming;
 import com.example.Book_My_Show_Application.Service.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,10 @@ public class ShowController {
     }
 
     @GetMapping("/getShowTiming")
-    public List<Shows> getShowsTiming(@RequestBody GetShowTiming getShowTiming){
-        System.out.println(getShowTiming.getMovieId());
+    public List<GetShowTiming> getShowsTiming(@RequestBody ShowTiming showTiming){
+        System.out.println(showTiming.getMovieId());
         try{
-            return showService.getShowsTiming(getShowTiming);
+            return showService.getShowsTiming(showTiming);
         }
         catch(Exception e){
             return null;

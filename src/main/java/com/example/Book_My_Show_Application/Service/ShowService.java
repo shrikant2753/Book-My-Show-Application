@@ -3,6 +3,7 @@ package com.example.Book_My_Show_Application.Service;
 import com.example.Book_My_Show_Application.Converter.ShowConvertor;
 import com.example.Book_My_Show_Application.Entity.*;
 import com.example.Book_My_Show_Application.EntryDTOs.ShowEntryDto;
+import com.example.Book_My_Show_Application.EntryDTOs.ShowTiming;
 import com.example.Book_My_Show_Application.Enums.SeatType;
 import com.example.Book_My_Show_Application.Repository.MovieRepository;
 import com.example.Book_My_Show_Application.Repository.ShowRepository;
@@ -80,22 +81,31 @@ public class ShowService {
         return showsSeatList;
     }
 
-    public List<Shows> getShowsTiming(GetShowTiming getShowTiming) throws Exception{
-        int movieId = getShowTiming.getMovieId();
-        int theaterId = getShowTiming.getTheaterId();
+    public List<GetShowTiming> getShowsTiming(ShowTiming showTiming) throws Exception{
+        int movieId = showTiming.getMovieId();
+        int theaterId = showTiming.getTheaterId();
         List<Shows> showsList = showRepository.findAll();
-        for(Shows shows : showsList){
-            System.out.println(shows.toString());
-        }
-        List<Shows> ansShowsList = new ArrayList<>();
+        List<GetShowTiming> ansShowsList = new ArrayList<>();
+
+//        for(Shows shows : showsList){
+//            System.out.println(shows.toString());
+//        }
+//        for(Shows shows : showsList){
+//            if(shows.getMovie().getId() == movieId && shows.getTheaterEntity().getId()==theaterId){
+//                ansShowsList.add(shows);
+//            }
+//        }
+
         for(Shows shows : showsList){
             if(shows.getMovie().getId() == movieId && shows.getTheaterEntity().getId()==theaterId){
-                ansShowsList.add(shows);
+                ansShowsList.add(ShowConvertor.convertToResponseDto(shows));
             }
         }
-        for(Shows shows : ansShowsList){
-            System.out.println(shows.toString());
-        }
+
+
+//        for(Shows shows : ansShowsList){
+//            System.out.println(shows.toString());
+//        }
         return ansShowsList;
     }
 }

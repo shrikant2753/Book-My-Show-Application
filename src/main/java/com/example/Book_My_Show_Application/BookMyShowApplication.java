@@ -12,9 +12,6 @@ public class BookMyShowApplication {
 }
 /*
 
-	1. getShowsTiming(movieId, theaterId)
-	2. getMovie with max no of shows across all theaters
-	3. getTheater(movieId)
-	4. getUniqueLocationsOfTheater()
 
+	2. getMovie with max no of shows across all theaters
  */

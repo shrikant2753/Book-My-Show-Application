@@ -1,12 +1,15 @@
 package com.example.Book_My_Show_Application.Service;
 
 import com.example.Book_My_Show_Application.Converter.TheaterConvertor;
+import com.example.Book_My_Show_Application.Entity.Shows;
 import com.example.Book_My_Show_Application.Entity.Theater;
 import com.example.Book_My_Show_Application.Entity.TheaterSeat;
 import com.example.Book_My_Show_Application.EntryDTOs.TheaterEntryDto;
 import com.example.Book_My_Show_Application.Enums.SeatType;
+import com.example.Book_My_Show_Application.Repository.ShowRepository;
 import com.example.Book_My_Show_Application.Repository.TheaterRepository;
 import com.example.Book_My_Show_Application.Repository.TheaterSeatRepository;
+import com.example.Book_My_Show_Application.ResponseDTOs.GetTheaterForMovie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,9 @@ public class TheaterService {
 
     @Autowired
     TheaterSeatRepository theaterSeatRepository;
+
+    @Autowired
+    ShowRepository showRepository;
 
     public String addTheater(TheaterEntryDto theaterEntryDto) throws Exception{
 
@@ -68,5 +74,40 @@ public class TheaterService {
         }
 
         return theaterSeatList;
+    }
+
+    public List<GetTheaterForMovie> getTheaterForMovie(int movieId){
+        List<GetTheaterForMovie> theaterList = new ArrayList<>();
+        List<Shows>showsList = showRepository.findAll();
+
+//        for(Shows shows : showsList){
+//            if(shows.getMovie().getId() == movieId){
+//                if(!theaterList.contains(shows.getTheaterEntity()))
+//                    theaterList.add(shows.getTheaterEntity());
+//            }
+//        }
+
+        for(Shows shows : showsList){
+            if(shows.getMovie().getId()==movieId){
+                if(!theaterList.contains(shows.getTheaterEntity())){
+                    GetTheaterForMovie listEntry = TheaterConvertor.convertTheaterDtoToEntity(shows.getTheaterEntity());
+                    if(!theaterList.contains(listEntry))
+                        theaterList.add(listEntry);
+                }
+            }
+        }
+        return theaterList;
+    }
+
+    public List<String> getUniqueLocations(){
+        List<String> locationsList = new ArrayList<>();
+        List<Theater> theaterList = theaterRepository.findAll();
+
+        for(Theater theater : theaterList){
+            if(!locationsList.contains(theater.getLocation())){
+                locationsList.add(theater.getLocation());
+            }
+        }
+        return locationsList;
     }
 }
