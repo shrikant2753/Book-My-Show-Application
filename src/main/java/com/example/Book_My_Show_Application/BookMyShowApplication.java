@@ -11,7 +11,5 @@ public class BookMyShowApplication {
 	}
 }
 /*
-
-
 	2. getMovie with max no of shows across all theaters
  */

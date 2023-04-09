@@ -9,7 +9,10 @@ import com.example.Book_My_Show_Application.EntryDTOs.TicketEntryDto;
 import com.example.Book_My_Show_Application.Repository.ShowRepository;
 import com.example.Book_My_Show_Application.Repository.TicketRepository;
 import com.example.Book_My_Show_Application.Repository.UserRepository;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -27,8 +30,8 @@ public class TicketService {
     @Autowired
     UserRepository userRepository;
 
-    //@Autowired
-    //JavaMailSender
+    @Autowired
+    private JavaMailSender emailSender;
 
     public String bookedTicket(TicketEntryDto ticketEntryDto) throws Exception{
         //convert dto to entity
@@ -79,6 +82,14 @@ public class TicketService {
         user.setBookedTickets(ticketList1);
         userRepository.save(user);
 
+        String body = "Hii " + user.getName() + ", \nThis is for confirming your seat for a movie " + ticket.getMovieName() + " at a theater " + ticket.getTheaterName() + " for a seats are " + allottedSeat +  "\nThank you.";
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        mimeMessageHelper.setFrom("shrikantrp.00@gmail.com");
+        mimeMessageHelper.setTo(user.getEmail());
+        mimeMessageHelper.setText(body);
+        mimeMessageHelper.setSubject("Confirming ticket for movie");
+        emailSender.send(mimeMessage);
         return "Ticket Booked Successfully";
     }
 
