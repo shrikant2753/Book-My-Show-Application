@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/movie")
@@ -33,5 +34,10 @@ public class MovieController {
     @GetMapping("/getTotalCollectionOfMovie")
     public int getTotalCollectionOfMovie(@RequestParam String movieName){
         return movieService.getTotalCollectionOfMovie(movieName);
+    }
+
+    @GetMapping("/getMovies")
+    public List<String> getMovies(){
+        return movieService.getMovies();
     }
 }

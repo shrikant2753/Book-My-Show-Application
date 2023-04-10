@@ -9,6 +9,7 @@ import com.example.Book_My_Show_Application.Repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,5 +38,16 @@ public class MovieService {
         }
 
         return totalCollection;
+    }
+
+    public List<String>getMovies(){
+        List<String> movieList = new ArrayList<>();
+        List<Movie> moviesList = movieRepository.findAll();
+
+        for(Movie movie : moviesList){
+            if(!movieList.contains(movie.getMovieName()))
+                movieList.add(movie.getMovieName());
+        }
+        return movieList;
     }
 }
