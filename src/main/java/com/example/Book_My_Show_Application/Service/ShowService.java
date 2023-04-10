@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -87,25 +90,30 @@ public class ShowService {
         List<Shows> showsList = showRepository.findAll();
         List<GetShowTiming> ansShowsList = new ArrayList<>();
 
-//        for(Shows shows : showsList){
-//            System.out.println(shows.toString());
-//        }
-//        for(Shows shows : showsList){
-//            if(shows.getMovie().getId() == movieId && shows.getTheaterEntity().getId()==theaterId){
-//                ansShowsList.add(shows);
-//            }
-//        }
-
         for(Shows shows : showsList){
             if(shows.getMovie().getId() == movieId && shows.getTheaterEntity().getId()==theaterId){
                 ansShowsList.add(ShowConvertor.convertToResponseDto(shows));
             }
         }
-
-
-//        for(Shows shows : ansShowsList){
-//            System.out.println(shows.toString());
-//        }
         return ansShowsList;
+    }
+
+    public List<GetShowTiming>getUpcomingShows(){
+        LocalDate date = java.time.LocalDate.now();
+        LocalTime time = java.time.LocalTime.now();
+
+        List<GetShowTiming> upcomingShow = new ArrayList<>();
+        List<Shows>showsList = showRepository.findAll();
+
+        for (Shows shows : showsList){
+            if(date.isBefore(shows.getShowDate())){
+                upcomingShow.add(ShowConvertor.convertToResponseDto(shows));
+            }
+            else if (date.isEqual(shows.getShowDate()) && time.isBefore(shows.getShowTime())) {
+                upcomingShow.add(ShowConvertor.convertToResponseDto(shows));
+            }
+        }
+
+        return upcomingShow;
     }
 }

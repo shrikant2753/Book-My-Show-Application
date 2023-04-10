@@ -39,4 +39,9 @@ public class ShowController {
             return null;
         }
     }
+
+    @GetMapping("/upcomingShows")
+    public List<GetShowTiming> getUpcomingShows(){
+        return showService.getUpcomingShows();
+    }
 }

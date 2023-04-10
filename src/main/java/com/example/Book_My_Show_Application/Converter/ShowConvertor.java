@@ -16,14 +16,15 @@ public class ShowConvertor {
     }
 
     public static GetShowTiming convertToResponseDto(Shows show){
-        GetShowTiming getShowTiming1 = GetShowTiming.builder()
+        String theater = show.getTheaterEntity().getTheaterName() + " " + show.getTheaterEntity().getLocation();
+        GetShowTiming getShowTiming = GetShowTiming.builder()
                 .showDate(show.getShowDate())
                 .showTime(show.getShowTime())
                 .showType(show.getShowType())
                 .createdOn(show.getCreatedOn())
                 .movie(show.getMovie().getMovieName())
-                .theater(show.getTheaterEntity().getTheaterName())
+                .theater(theater)
                 .build();
-        return getShowTiming1;
+        return getShowTiming;
     }
 }
