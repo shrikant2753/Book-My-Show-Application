@@ -31,13 +31,11 @@ public class TicketService {
     UserRepository userRepository;
 
     @Autowired
-    private JavaMailSender emailSender;
+    JavaMailSender emailSender;
 
     public String bookedTicket(TicketEntryDto ticketEntryDto) throws Exception{
         //convert dto to entity
         Ticket ticket = TicketConvertor.convertDtoToEntity(ticketEntryDto);
-
-        int showId = ticketEntryDto.getShowId();
 
         //validation - Check requested seats are available or not?
         boolean isValidRequest = checkValidityOfRequestedSeat(ticketEntryDto);

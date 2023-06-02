@@ -10,6 +10,3 @@ public class BookMyShowApplication {
 		SpringApplication.run(BookMyShowApplication.class, args);
 	}
 }
-/*
-	2. getMovie with max no of shows across all theaters
- */

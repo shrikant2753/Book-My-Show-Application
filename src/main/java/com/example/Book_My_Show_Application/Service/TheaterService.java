@@ -80,13 +80,6 @@ public class TheaterService {
         List<GetTheaterForMovie> theaterList = new ArrayList<>();
         List<Shows>showsList = showRepository.findAll();
 
-//        for(Shows shows : showsList){
-//            if(shows.getMovie().getId() == movieId){
-//                if(!theaterList.contains(shows.getTheaterEntity()))
-//                    theaterList.add(shows.getTheaterEntity());
-//            }
-//        }
-
         for(Shows shows : showsList){
             if(shows.getMovie().getId()==movieId){
                 if(!theaterList.contains(shows.getTheaterEntity())){

@@ -27,6 +27,7 @@ public class User {
     private int age;
     private String address;
 
+    //this is parent wrt Ticket
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Ticket> bookedTickets = new ArrayList<>();
 }
